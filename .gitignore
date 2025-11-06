@@ -1,0 +1,13 @@
+.idea/
+
+#executaveis
+*.exe
+*.out
+*.app
+
+#Arquivo de texto
+*.txt
+
+#Arquivos de Objetos
+*.o
+*.obj
