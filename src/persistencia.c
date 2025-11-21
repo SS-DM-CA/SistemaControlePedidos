@@ -2,7 +2,7 @@
 #include "produto.h"
 #include "pedido.h"
 #include "cliente.h"
-#inlcude <stdio.h>
+#include <stdio.h>
 
 int main(){}
 
@@ -15,6 +15,8 @@ void carregarArquivo(FILE *fpro,FILE *fped, FILE *fcli,Produto *produtos, Pedido
     cont =0;
 
     fped = fopen("Pedidos.csv","r+");
-    while (fscanf(""))
+    while (fscanf("%d %d %s %lf", &pedidos.id[0],&pedidos.clienteId[0], pedidos.data[0], &pedidos.total[0])==4){
+      
+    }
 
 }
