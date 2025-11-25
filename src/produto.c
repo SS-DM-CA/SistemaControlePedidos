@@ -53,5 +53,12 @@ void consultarProduto(int Id,Produto *produtos, int tamanhoProd ) {
 
 }
 
+void listarProduto (Produto *produtos,int tamanhoProd) {
+    for (int i =0; i<tamanhoProd;i++) {
+        printf("%d,%99[^\n],%lf,%d ", produtos[i].id,produtos[i].descricao,produtos[i].preco,produtos[i].estoque);
+    }
+}
+
+
 
 
