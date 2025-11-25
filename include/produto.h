@@ -8,9 +8,13 @@ typedef struct {
     int estoque;
 }Produto;
 
-void cadastrarProduto(int id,Produto produto) {
+void cadastrarProduto(int Id,Produto produto,Produto *produtos,int tamanhoProd);
 
-}
+void consultarProduto(int Id, Produto *produtos, int tamanhoProd);
+
+void removerProduto(int Id, Produto *produtos, int tamanhoProd);
+
+void listarProdutos(Produto *produtos, int tamanhoProd);
 
 
 
