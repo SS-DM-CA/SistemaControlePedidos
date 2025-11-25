@@ -1,96 +1,150 @@
 #include <ncurses.h>
 #include <string.h>
-#define num_op 4
-#define altura 10
-#define largura 40
+#include <locale.h>
 
-char *opcoes[]= {
-        "Opção 1",
-        "Opçãoooo 2",
-        "Opçãooooo 3",
-        "Sair"
+int altura, comprimento;
+// Removido o define fixo para permitir tamanhos dinâmicos
+
+char *opcoes_main[] = {
+    "Cliente",
+    "Produto",
+    "Pedido",
+    "Sair"
 };
-
-void desenhar(WINDOW *menu_win, int destacado, char *opcoes[]) {
-    //Desenho da caixa
-    int y=2;
+char *opcoes_clientes[] = {
+    "Cadastrar",
+    "Consultar",
+    "Analisar",
+    "Listar",
+    "Remover"
+};
+void desenhar(WINDOW *menu_win, int destacado, char *opcoes[], int n_opcoes, int x, int y) {
     box(menu_win, 0, 0);
-    wattron(menu_win, COLOR_PAIR(1) | A_BOLD);
-    mvwprintw(menu_win, 1, (largura - 14) / 2, "MENU PRINCIPAL");
-    wattroff(menu_win, COLOR_PAIR(1) | A_BOLD);
-    //Mudança do destacado
-    for (int i=0; i < num_op; i++) {
-        if (i==destacado) {
-            wattron(menu_win, COLOR_PAIR(2) | A_BOLD);
-            mvwprintw(menu_win, y + i + 1, (largura-26)/2, " %s", opcoes[i]);
-            wattroff(menu_win, COLOR_PAIR(2) | A_BOLD);
-        }
-        else {
-            mvwprintw(menu_win, y + i + 1, (largura-26)/2, " %s", opcoes[i]);
+    int tamanho_max = 0;
+    for (int i = 0; i < n_opcoes; i++) {
+        int len = strlen(opcoes[i]);
+        if (len > tamanho_max) {
+            tamanho_max= len;
         }
     }
-    mvwprintw(menu_win, 8, (largura-19)/2, "Use setas e Enter");
+    for (int i = 0; i < n_opcoes; i++) {
+        if (i == destacado) {
+            wattron(menu_win, COLOR_PAIR(2) | A_BOLD);
+            mvwprintw(menu_win, y/2 - n_opcoes/2 + i, (x - (tamanho_max + 2))/2, "%s ", opcoes[i]);
+            wattroff(menu_win, COLOR_PAIR(2) | A_BOLD);
+        } else {
+            mvwprintw(menu_win, y/2 - n_opcoes/2 + i, (x - (tamanho_max + 2))/2, "%s ", opcoes[i]);
+        }
+    }
     wrefresh(menu_win);
 }
-
+void movimento(WINDOW *menu_win, int *destacado, int *escolha, int n_opcoes){
+    int ch;
+    ch = wgetch(menu_win);
+        switch (ch) {
+            case KEY_UP:
+                if (*destacado == 0) {
+                    *destacado = n_opcoes-1;
+                }
+                else {
+                    *destacado = *destacado - 1;
+                }
+                break;
+            case KEY_DOWN:
+                if (*destacado == n_opcoes-1) {
+                    *destacado = 0;
+                }
+                else {
+                    *destacado = *destacado + 1;
+                }
+                break;
+            case 10: // Enter (Line Feed)
+            case 13: // Enter (Carriage Return)
+            case KEY_ENTER:
+                *escolha = *destacado;
+                break;
+            case 'q':
+            case 'Q':
+                *escolha = n_opcoes - 1;
+                break;
+        }
+}
+void cliente_escolhas(int win_altura, int start_y, int destacado, int n_opcoes_main){
+    int sub_destacado = 0;
+    int sub_escolha = -1;
+    int n_opcoes_cliente = sizeof(opcoes_clientes) / sizeof(opcoes_clientes[0]);
+    int win_comprimento_menu = comprimento * 0.3;
+    int win_comprimento_sub = comprimento * 0.4;
+    int start_x_menu = (comprimento - comprimento*0.7)/2;
+    int start_x_sub = start_x_menu + win_comprimento_menu;
+    WINDOW *menu_win = newwin(win_altura, win_comprimento_menu, start_y, start_x_menu);
+    WINDOW *sub_win = newwin(win_altura, win_comprimento_sub, start_y, start_x_sub);
+    while(1){
+        desenhar(menu_win, destacado, opcoes_main, n_opcoes_main, win_comprimento_menu, win_altura);
+        desenhar(sub_win, sub_destacado, opcoes_clientes, n_opcoes_cliente, win_comprimento_sub, win_altura);
+        movimento(sub_win, &sub_destacado, &sub_escolha, n_opcoes_cliente);
+        switch (sub_escolha)
+        {
+        case 0:
+            break;
+        case 1:
+            break;
+        case 2:
+            break;
+        case 3:
+            break;
+        case 4:
+            return;
+        }
+    }
+}
 void menu() {
-    //Inicialização
+    setlocale(LC_ALL, "");
     initscr();
     clear();
     noecho();
     curs_set(0);
     cbreak();
-    int inicio_y=(LINES - altura) / 2;
-    int inicio_x=(COLS - largura) / 2;
-    WINDOW *menu_win=newwin(altura, largura, inicio_y, inicio_x);
+    getmaxyx(stdscr, altura, comprimento);
+    // Centralizando a janela
+    int win_altura_menu = altura * 0.8;
+    int win_comprimento_menu = comprimento * 0.7;
+    int start_y_menu = (altura - win_altura_menu) / 2;
+    int start_x_menu = (comprimento - win_comprimento_menu) / 2;
+    WINDOW *menu_win = newwin(win_altura_menu, win_comprimento_menu, start_y_menu, start_x_menu);
     keypad(menu_win, TRUE);
-    int escolha=0;
-    int destacado=0;
-    int ch;
     start_color();
-    init_pair(1, COLOR_BLUE, COLOR_BLACK);
-    init_pair(2, COLOR_BLACK, COLOR_BLUE);
-    //LOOP do menu
+    init_pair(1, COLOR_BLUE, COLOR_BLACK); // Texto padrão
+    init_pair(2, COLOR_BLACK, COLOR_BLUE); // Destaque (fundo azul)
+
+    // Calcula o tamanho do menu automaticament
+    int n_opcoes_main = sizeof(opcoes_main) / sizeof(opcoes_main[0]);
+    int destacado = 0;
+    int escolha = -1;
     while (1) {
-        desenhar(menu_win, destacado, opcoes);
-        ch=wgetch(menu_win);
-        //Mudar destacado, sair e selecionar
-        switch (ch) {
-            case KEY_UP:
-                if (destacado > 0) destacado--;
-            break;
-            case KEY_DOWN:
-                if (destacado < num_op - 1) destacado++;
-            break;
-            case 10:
-                escolha=destacado;
-            break;
-            case 'q':
-            case 'Q': 
-                escolha=num_op - 1;
+        desenhar(menu_win, destacado, opcoes_main, n_opcoes_main, win_comprimento_menu, win_altura_menu);
+        movimento(menu_win, &destacado, &escolha, n_opcoes_main);
+        switch (escolha){
+            case 0:
+                //wclear(menu_win);
+                //cliente_escolhas(win_altura_menu, start_y_menu, destacado, n_opcoes_main);
                 break;
-        }
-        if (ch==10 || ch=='q'|| ch=='Q') {
-            if (escolha==num_op - 1) {
+            case 1:
                 break;
-            }
-            else {
-                clear();
-                attron(COLOR_PAIR(1) | A_BOLD);
-                mvprintw(LINES/2, (COLS - 30)/2, "Você escolheu: %s",
-                    opcoes[escolha]);
-                attroff(COLOR_PAIR(1) | A_BOLD);
-                mvprintw(LINES/2 + 2, (COLS - 30)/2, "Pressione qualquer tecla...");
-                refresh();
-                getch();
-            }
+            case 2:
+                break;
+            case 3:
+                wclear(menu_win);
+                delwin(menu_win);
+                endwin();
+                return;
         }
     }
     delwin(menu_win);
     endwin();
-    return;
 }
 
-int main(){
+int main() {
     menu();
+    return 0;
 }
