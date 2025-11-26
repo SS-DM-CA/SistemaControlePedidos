@@ -10,7 +10,7 @@ typedef struct{
 
 typedef struct{
   int pedidoId;
-  int peodutoId;
+  int produtoId;
   int quantidade;
   double subtotal;
 }ItemPedido;
