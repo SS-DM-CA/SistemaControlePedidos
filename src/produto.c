@@ -29,6 +29,8 @@ void cadastrarProduto(int Id, Produto produto, Produto *produtos,int tamanhoProd
         scanf("%99[^\n] %lf %d",produto.descricao,&produto.preco,&produto.estoque);
         //Quando ele apertar o botão Cadastrar
         produtos = (Produto *) realloc(produtos,(tamnhoProd+1)*sizeof(Produto));
+        produtos[tamanhoProd] = produto;
+        tamanhoProd++;
     }
 
 }
