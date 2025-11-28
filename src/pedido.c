@@ -9,6 +9,43 @@ void cadastrarItensPedido(Produto *produtos,int tamanhoProd, ItemPedido *itemsPe
 int analisaProduto(int Id, Produto *produtos,int tamanhoProd);
 
 int main(){}
+
+
+
+void consultarPedidos(Pedido *pedidos, int tamanhoPed){
+  int Id;
+  printf("Digite o id do pedido que deseja consultar: ");
+  scanf("%d",&Id);
+  if(analisaPedido == 2){
+    //Pedido não existe
+    return EXIT_FAILURE;
+  }
+  else{
+    //O pedido existe
+    for(int i=0;i<tamanhoPed;i++ ){
+      if(pedidos[i].id==Id){
+        //na interface podemos colocar ainda um botão para consultar os items pedidos;
+        //aqui ele apenas imprimi os valores do pedido que deseja consultar
+        printf("%d %d %s %lf", &pedidos[i].id,&pedidos[i].clienteId,pedidos[i].data,pedidos[i].total);
+      }
+    }
+  }
+}
+
+
+void listarPedido(Pedido *pedidos, int tamanhoPed,ItemPedido *itemsPedidos){
+  //contador para o while;
+  int cont =0;
+
+  for(int i =0; i<tamanhoPed;i++){
+    printf("%d %d %s %lf", &pedidos[i].id,&pedidos[i].clienteId,pedidos[i].data,pedidos[i].total);
+    //imprimi os items do pedido ate comparando os codigos
+    //compara até o codigo de um item pedido for diferente do codigo do pedido
+    while(itemsPedidos[cont].pedidoId == pedidos[i].id){
+      printf("%d %d %d %lf",&itemsPedidos[cont].pedidoId,&itemsPedidos[cont].produtoId,&itemsPedidos[cont].quantidade,&itemsPedidos[cont].subtotal);
+    }
+  }
+}
 void cadastrarPedido(Pedidos **pedidos, int *tamanhoPed, Cliente *clientes, int tamanhoCli,ItemPedido *itemsPedidos,int tamanhoItemPed,
                      Produto *produtos,int tamanhoProd){
    Pedido pedido;
@@ -34,7 +71,7 @@ void cadastrarPedido(Pedidos **pedidos, int *tamanhoPed, Cliente *clientes, int 
      }
      else{
        //cliente existe
-       pedido.clienteid = IdCli;
+       pedido.clienteId = IdCli;
        scanf("%d %s %lf",&pedido.id,&pedido.data,&pedido.total);
        *pedidos = (Pedido *) realloc(*pedidos,(*tamanhoPed+1)*sizeof(Pedido));
        *pedidos[*tamanhoPed] = pedido;
