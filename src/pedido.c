@@ -11,7 +11,17 @@ int analisaProduto(int Id, Produto *produtos,int tamanhoProd);
 int main(){}
 
 void removerPedido(Pedido *pedidos, int tamanhoPed){
-  if(){}
+  int Id;
+  printf("Digite o id do pedido que deseja consultar: ");
+  scanf("%d",&Id);
+  if(analisaPedido(Id,pedidos,tamanhoPed)==2){
+    //pedido não existe
+    //não é possivel apagar
+    printf("O pedido não existe");
+  }
+  else{
+
+  }
 }
 
 void consultarPedidos(Pedido *pedidos, int tamanhoPed){
@@ -85,6 +95,24 @@ void cadastrarPedido(Pedidos **pedidos, int *tamanhoPed, Cliente *clientes, int 
      }
    }
 }
+
+
+void removerItemPedido(Produto *produtos,int tamanhoProd){
+  int Id;
+  printf("Digite o id do pedido que deseja consultar: ");
+  scanf("%d",&Id);
+  if(analisaProduto(Id,produtos,tamanhoProd)== 2){
+    //O produto não existe
+    printf("O produto não existe não existe");
+  }
+  else{
+    //o produto existe
+    //agora ele deve ser apagado
+    
+  }
+}
+
+
 void cadastrarItensPedido(Produto *produtos,int tamanhoProd, ItemPedido **itemsPedidos,int *tamanhoItemPed) {
     ItemPedido itempedido;
     int IdProd;
