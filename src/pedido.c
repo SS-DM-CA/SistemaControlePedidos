@@ -10,13 +10,15 @@ int analisaProduto(int Id, Produto *produtos,int tamanhoProd);
 
 int main(){}
 
-
+void removerPedido(Pedido *pedidos, int tamanhoPed){
+  if(){}
+}
 
 void consultarPedidos(Pedido *pedidos, int tamanhoPed){
   int Id;
   printf("Digite o id do pedido que deseja consultar: ");
   scanf("%d",&Id);
-  if(analisaPedido == 2){
+  if(analisaPedido(Id,pedidos,tamanhoPed) == 2){
     //Pedido não existe
     return EXIT_FAILURE;
   }
