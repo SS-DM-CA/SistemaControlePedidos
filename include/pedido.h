@@ -22,7 +22,7 @@ void cadastrarPedido(Pedidos **pedidos, int *tamanhoPed, Cliente *clientes, int 
                      Produto *produtos,int tamanhoProd);
 void listarPedidos(Pedido *pedidos, int tamanhoPed,ItemPedido *itemsPedidos);
 void removerPedido();
-void consultarPedido();
+void consultarPedido(Pedido *pedidos, int tamanhoPed);
 
 
 
