@@ -1,6 +1,7 @@
 #include <ncurses.h>
 #include <string.h>
 #include <locale.h>
+#include "../include/cliente.h"
 
 int altura, comprimento;
 int topo_h, fundo_h, menu_box_w;
@@ -37,7 +38,7 @@ void calcular_dimensoes() {
     if (menu_box_w < 25) menu_box_w = 25;
 }
 
-void desenhar_layout(char *titulo_topo) {
+void desenhar_layout(char *titulo_topo, char *instrucoes) {
     clear();
     mvwhline(stdscr, 0, 0, ACS_HLINE, comprimento);
     mvwhline(stdscr, topo_h - 1, 0, ACS_HLINE, comprimento);
@@ -61,8 +62,6 @@ void desenhar_layout(char *titulo_topo) {
     mvaddch(footer_y, comprimento - 1, ACS_URCORNER);
     mvaddch(altura - 1, 0, ACS_LLCORNER);
     mvaddch(altura - 1, comprimento - 1, ACS_LRCORNER);
-
-    char *instrucoes = "Use as setas [^][v] para navegar, [ENTER] para acessar e Q para sair.";
     mvprintw(footer_y + (fundo_h/2), 2, "%s", instrucoes);
 
     refresh();
@@ -129,7 +128,7 @@ void movimento(WINDOW *menu_win, int *destacado, int *escolha, int n_opcoes){
 
 int menu_generico(char *titulo_janela, char *opcoes[], int n_opcoes) {
     calcular_dimensoes();
-    desenhar_layout(titulo_janela);
+    desenhar_layout(titulo_janela, "Use as setas [^][v] para navegar, [ENTER] para acessar e Q para sair.");
 
     int win_altura_menu, win_comprimento_menu, espaco_vertical_disponivel, start_y_menu, start_x_menu;
 
@@ -157,7 +156,7 @@ int menu_generico(char *titulo_janela, char *opcoes[], int n_opcoes) {
             menu_win = NULL;
             refresh();
             calcular_dimensoes();
-            desenhar_layout(titulo_janela);
+            desenhar_layout(titulo_janela, "Use as setas [^][v] para navegar, [ENTER] para acessar e Q para sair.");
             escolha = -1;
             continue;
         }
@@ -177,7 +176,7 @@ void mostrar_tela_teste(char *titulo_acao) {
     int ch;
     do {
         calcular_dimensoes();
-        desenhar_layout(titulo_acao);
+        desenhar_layout(titulo_acao, "Use as setas [^][v] para navegar, [ENTER] para acessar e Q para sair.");
         WINDOW *msg_win = newwin(5, comprimento-4, altura/2 - 2, 2);
         box(msg_win, 0,0);
         mvwprintw(msg_win, 2, 2, "Funcao '%s' em desenvolvimento...", titulo_acao);
@@ -193,8 +192,15 @@ void modulo_clientes() {
     int rodando = 1;
     while(rodando) {
         int escolha = menu_generico("MÓDULO: GESTÃO DE CLIENTES", opcoes_clientes, n_opcoes);
-        if (escolha == n_opcoes - 1) rodando = 0;
-        else mostrar_tela_teste(opcoes_clientes[escolha]);
+        switch (escolha){
+            case 0: cadastro(); break;
+            case 1: break;
+            case 2: break;
+            case 3: break;
+            case 4:
+                rodando = 0;
+                break;
+        }
     }
 }
 
@@ -229,24 +235,4 @@ void menu_principal() {
                 break;
         }
     }
-}
-
-
-int main() {
-    setlocale(LC_ALL, "");
-    initscr();
-    noecho();
-    curs_set(0);
-    cbreak();
-
-    if (has_colors()) {
-        start_color();
-        init_pair(1, COLOR_WHITE, COLOR_BLACK);
-        init_pair(2, COLOR_WHITE, COLOR_BLUE);
-    }
-
-    menu_principal();
-
-    endwin();
-    return 0;
 }
