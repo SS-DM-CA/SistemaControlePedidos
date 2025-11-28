@@ -24,6 +24,7 @@ typedef struct juridica{
     clt cj;
 }juri;
 
+
 void cadastro(){
     desenhar_layout("CADASTRO", "PREENCHA TODOS OS CAMPOS E APERTE COMFIRMAR OU Q PARA CANCELAR E VOLTAR");
     mvprintw(10, 2, "Pressione algo para voltar...");
