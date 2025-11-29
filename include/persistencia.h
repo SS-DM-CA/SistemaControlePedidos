@@ -3,9 +3,9 @@
 
 
 
-void carregarArquivo(FILE *fpro,FILE *fped, FILE *fcli,Produto *produtos, Pedido *pedidos, Cliente *clientes){
+void carregarArquivo(FILE *fpro,FILE *fped, FILE *fcli,Produto *produtos, Pedido *pedidos, Cliente *clientes);
 
-}
+
 
 
 
