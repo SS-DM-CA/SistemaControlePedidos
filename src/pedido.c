@@ -10,16 +10,30 @@ int analisaProduto(int Id, Produto *produtos,int tamanhoProd);
 
 int main(){}
 
-void removerPedido(Pedido *pedidos, int tamanhoPed){
+void removerPedido(Pedido **pedidos, int *tamanhoPed){
   int Id;
   printf("Digite o id do pedido que deseja consultar: ");
   scanf("%d",&Id);
-  if(analisaPedido(Id,pedidos,tamanhoPed)==2){
+  if(analisaPedido(Id,pedidos,*tamanhoPed)==2){
     //pedido não existe
     //não é possivel apagar
     printf("O pedido não existe");
   }
   else{
+    //O pedido existe
+    //ele deve ser excluido
+    for(int i =0;i<*tamanhoPed;i++){
+      if(*pedidos[i].id == Id){
+        for(int j =i; j<*tamanhoPed-1;j++){
+          *pedidos[j]=*pedidos[j+1];
+        }
+        *pedidos=(Pedido *) realloc(*pedidos,(*tamanhoPed-1)*sizeof(Pedido));
+        (*tamanhoPed)--;
+        break;
+      }
+
+    }
+
 
   }
 }
@@ -85,8 +99,11 @@ void cadastrarPedido(Pedidos **pedidos, int *tamanhoPed, Cliente *clientes, int 
        //cliente existe
        pedido.clienteId = IdCli;
        scanf("%d %s %lf",&pedido.id,&pedido.data,&pedido.total);
+       //aumentando o tamanho do vetor
        *pedidos = (Pedido *) realloc(*pedidos,(*tamanhoPed+1)*sizeof(Pedido));
+       //adicionando o valor no vetor
        *pedidos[*tamanhoPed] = pedido;
+       //aumantando o tamanho
        (*tamanhoPed)++;
 
 
@@ -97,7 +114,7 @@ void cadastrarPedido(Pedidos **pedidos, int *tamanhoPed, Cliente *clientes, int 
 }
 
 
-void removerItemPedido(Produto *produtos,int tamanhoProd){
+void removerItemPedido(Produto **produtos,int *tamanhoProd){
   int Id;
   printf("Digite o id do pedido que deseja consultar: ");
   scanf("%d",&Id);
@@ -108,7 +125,19 @@ void removerItemPedido(Produto *produtos,int tamanhoProd){
   else{
     //o produto existe
     //agora ele deve ser apagado
-    
+    for(int i =0;i<*tamanhoProd;i++){
+      if(*produtos[i].id == Id){
+        for(int j =i; j<*tamanhoProd-1;j++){
+          *produtos[j]=*produtos[j+1];
+        }
+        *produtos=(Produto *) realloc(*produtos,(*tamanhoProd-1)*sizeof(Produto));
+        (*tamanhoProd)--;
+        break;
+      }
+
+    }
+
+
   }
 }
 
