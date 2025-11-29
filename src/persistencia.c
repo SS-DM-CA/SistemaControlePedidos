@@ -6,7 +6,8 @@
 
 int main(){}
 
-void carregarArquivo(FILE *fpro,FILE *fped, FILE *fcli,Produto *produtos, Pedido *pedidos, Cliente *clientes){
+void carregarArquivo(FILE *fpro,FILE *fped, FILE *fcli,FILE *fitem,Produto *produtos, Pedido *pedidos, Cliente *clientes,ItemPedido *itemsPedidos){
+
     fpro = fopen("Produtos.csv","r+");
     // o cont serve para ir almentando a posição do vetor
     int cont =0;
@@ -16,8 +17,14 @@ void carregarArquivo(FILE *fpro,FILE *fped, FILE *fcli,Produto *produtos, Pedido
     cont =0;
 
     fped = fopen("Pedidos.csv","r+");
-    while (fscanf(fped,"%d, %d, %s, %lf", &pedidos.id[0],&pedidos.clienteId[0], pedidos.data[0], &pedidos.total[0])==4){
+    while (fscanf(fped,"%d, %d, %s, %lf", &pedidos[cont].id,&pedidos[cont].clienteId, pedidos[cont].data, &pedidos[cont].total)==4){
       cont++;
+    }
+    cont =0;
+
+    fitem = fopen("ItemPedidos.csv","r+");
+    while (fscanf(fped,"%d, %d, %d, %lf", &itemsPedidos[cont].pedidoId,&itemsPedidos[cont].produtoId, &itemsPedidos[cont].quantidade, &itemsPedidos[cont].subtotal)==4){
+        cont++;
     }
     cont =0;
     //problema por causa da pessoa juridica ou pessoa fisica
