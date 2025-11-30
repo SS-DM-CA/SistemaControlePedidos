@@ -3,10 +3,15 @@
 #include "pedido.h"
 #include "cliente.h"
 #include <stdio.h>
-void carregarProduto(FILE *fpro,Produto *produtos);
-void carregarPedidos(FILE *fped,Pedido *pedidos);
-void carregarClientes(Cliente *clientes,Cliente *clientes);
-void carregarItemPedido(FILE *fitem,ItemPedido *itemsPedidos);
+int carregarProduto(FILE **fpro,Produto **produtos);
+int carregarPedidos(FILE **fped,Pedido **pedidos);
+int carregarClientes(FILE **fcli,Cliente **clientes);
+int carregarItemPedido(FILE **fitem,ItemPedido **itemsPedidos);
+void salvarProduto(FILE *fpro,Produto *produtos, int tamanhoProd);
+void salvarPedido(FILE *fped,Pedido *pedidos,int tamanhoPed);
+void salvarItemPedido(FILE *fitem,ItemPedido *itemsPedidos,int tamanhoItemPed);
+void salvarCliente(FILE *fcli,Cliente *clientes,int tamanhoCli);
+
 int main(){}
 
 void carregarArquivo(FILE *fpro,FILE *fped, FILE *fcli,FILE *fitem,Produto *produtos, Pedido *pedidos, Cliente *clientes,ItemPedido *itemsPedidos)
@@ -14,13 +19,71 @@ void carregarArquivo(FILE *fpro,FILE *fped, FILE *fcli,FILE *fitem,Produto *prod
     carregarPedidos(fped,pedidos);
     carregarItemPedidos(fitem,itemsPedidos);
     //problema por causa da pessoa juridica ou pessoa fisica
-    fcli = fopen("Clientes.csv", "r+");
-    fscanf(fcli)
-    while(fscanf(fcli,"%d, %199[^,], %s, %s, %s, %s, %s")){}
 }
 
+void salvarArquivo(FILE *fpro,FILE *fped, FILE *fcli,FILE *fitem,Produto *produtos, Pedido *pedidos, Cliente *clientes,ItemPedido *itemsPedidos,
+                   int tamanhoProd,int tamanhoPed,int tamanhoItemPed,int tamanhoCli){
+  salvarProduto(fpro,produtos,tamanhoProd);
+  salvarPedido(fped,pedidos,tamanhoPed);
+  salvarItemPedido(fitem,itemsPedidos,tamanhoItemPed);
+  salvarCliente(fcli,clientes,tamanhoCli);
+
+}
+
+
+
+void salvarProduto(FILE *fpro,Produto *produtos,int tamanhoProd){
+  for(int i=0;i<tamanhoProd;i++){
+      fprintf(fpro,"%d, %s, %lf, %d \n",produtos[i].id,produtos[i].descricao,produtos[i].preco,produtos[i].estoque);
+  }
+  fclose(fpro);
+
+}
+
+void salvarPedido(FILE *fped,Pedido *pedidos,int tamanhoPed){
+  for(int i =0;i<tamanhoPed;i++){
+    fprintf(fped,"%d, %d, %s, %lf", pedidos[i].id,pedidos[i].clienteId, pedidos[i].data, pedidos[i].total);
+  }
+  fclose(fped);
+}
+
+void salvarCliente(FILE *fcli,Cliente *clientes,int tamanhoCli){
+  for(int i =0; i<tamanhoCli;i++){
+
+  }
+  fclose(fcli);
+}
+
+void salvarItemPedido(FILE *fitem,ItemPedido *itemsPedidos,int tamanhoItemPed){
+  for(int i=0;i<tamanhoItemPed;i++){
+      (fitem,"%d, %d, %d, %lf", itemsPedidos[i].pedidoId,itemsPedidos[i].produtoId, itemsPedidos[i].quantidade, itemsPedidos[i].subtotal)
+  }
+  fclose(fitem);
+}
+int  carregarClientes(FILE **fcli,Cliente **clientes){
+  //abrir o arquivo
+    *fcli = fopen("Clientes.csv", "r+");
+    //se não abrir
+    if( *fcli== NULL){
+        printf("O arquivo Clientes.csv não existe");
+        printf("Ele sera criado");
+        *fcli = fopen("Produtos.csv","a");
+        fclose(*fcli);
+        *fcli = fopen("Produtos.csv","r+");
+    }
+    // o cont serve para ir almentando a posição do vetor
+    int cont =0;
+    *clientes = (Cliente *) realloc(*clientes,(cont+1)*sizeof(Clientes));
+    while(fscanf(*fcli,"%d, %199[^,], %s, %s, %s, %s, %s")){
+      cont++;
+        *clientes = (Cliente *) realloc(*clientes,(cont+1)*sizeof(Clientes));
+    }
+    return cont;
+}
+
+
 int carregarProduto(FILE **fpro,Produto **produtos){
-     *fpro=fopen("Produtos.csv","r+");
+    *fpro=fopen("Produtos.csv","r+");
     if( *fpro== NULL){
       printf("O arquivo Produtos.csv não existe");
       printf("Ele sera criado");
