@@ -1,15 +1,17 @@
+
 #include "persistencia.h"
 #include "produto.h"
 #include "pedido.h"
 #include "cliente.h"
 #include <stdio.h>
+#include <stdlib.h>
 
 void salvarProduto(FILE *fpro,Produto *produtos, int tamanhoProd);
 void salvarPedido(FILE *fped,Pedido *pedidos,int tamanhoPed);
 void salvarItemPedido(FILE *fitem,ItemPedido *itemsPedidos,int tamanhoItemPed);
 void salvarCliente(FILE *fcli,Cliente *clientes,int tamanhoCli);
 
-int main(){}
+
 
 
 
@@ -34,14 +36,14 @@ void salvarProduto(FILE *fpro,Produto *produtos,int tamanhoProd){
 
 void salvarPedido(FILE *fped,Pedido *pedidos,int tamanhoPed){
   for(int i =0;i<tamanhoPed;i++){
-    fprintf(fped,"%d, %d, %s, %lf", pedidos[i].id,pedidos[i].clienteId, pedidos[i].data, pedidos[i].total);
+    fprintf(fped,"%d, %d, %s, %lf\n", pedidos[i].id,pedidos[i].clienteId, pedidos[i].data, pedidos[i].total);
   }
   fclose(fped);
 }
 
 void salvarCliente(FILE *fcli,Cliente *clientes,int tamanhoCli){
   for(int i =0; i<tamanhoCli;i++){
-      fprintf(fcli,"%d, %s, %s, %s, %s, %s, %s",clientes[i].id,clientes[i].endereco,clientes[i].telefone,
+      fprintf(fcli,"%d, %s, %s, %s, %s, %s, %s\n",clientes[i].id,clientes[i].endereco,clientes[i].telefone,
                     clientes[i].email,clientes[i].nome,clientes[i].contato,clientes[i].identidade);
   }
   fclose(fcli);
@@ -49,7 +51,7 @@ void salvarCliente(FILE *fcli,Cliente *clientes,int tamanhoCli){
 
 void salvarItemPedido(FILE *fitem,ItemPedido *itemsPedidos,int tamanhoItemPed){
   for(int i=0;i<tamanhoItemPed;i++){
-      (fitem,"%d, %d, %d, %lf", itemsPedidos[i].pedidoId,itemsPedidos[i].produtoId, itemsPedidos[i].quantidade, itemsPedidos[i].subtotal)
+      fprintf(fitem,"%d, %d, %d, %lf\n", itemsPedidos[i].pedidoId,itemsPedidos[i].produtoId, itemsPedidos[i].quantidade, itemsPedidos[i].subtotal);
   }
   fclose(fitem);
 }
