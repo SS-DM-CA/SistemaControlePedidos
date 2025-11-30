@@ -41,7 +41,8 @@ void salvarPedido(FILE *fped,Pedido *pedidos,int tamanhoPed){
 
 void salvarCliente(FILE *fcli,Cliente *clientes,int tamanhoCli){
   for(int i =0; i<tamanhoCli;i++){
-
+      fprintf(fcli,"%d, %s, %s, %s, %s, %s, %s",clientes[i].id,clientes[i].endereco,clientes[i].telefone,
+                    clientes[i].email,clientes[i].nome,clientes[i].contato,clientes[i].identidade);
   }
   fclose(fcli);
 }
@@ -59,16 +60,17 @@ int  carregarClientes(FILE **fcli,Cliente **clientes){
     if( *fcli== NULL){
         printf("O arquivo Clientes.csv não existe");
         printf("Ele sera criado");
-        *fcli = fopen("Produtos.csv","a");
+        *fcli = fopen("Clientes.csv","a");
         fclose(*fcli);
-        *fcli = fopen("Produtos.csv","r+");
+        *fcli = fopen("Clientes.csv","r+");
     }
     // o cont serve para ir almentando a posição do vetor
     int cont =0;
-    *clientes = (Cliente *) realloc(*clientes,(cont+1)*sizeof(Clientes));
-    while(fscanf(*fcli,"%d, %199[^,], %s, %s",&(*cliente)[cont].id)){
+    *clientes = (Cliente *) realloc(*clientes,(cont+1)*sizeof(Cliente));
+    while(fscanf(*fcli,"%d, %199[^,], %s, %s, %s, %s, %s",&(*clientes)[cont].id,(*clientes)[cont].endereco,(*clientes)[cont].telefone,
+                  (*clientes)[cont].email,(*clientes)[cont].nome,(*clientes)[cont].contato,(*clientes)[cont].identidade)==7){
       cont++;
-        *clientes = (Cliente *) realloc(*clientes,(cont+1)*sizeof(Clientes));
+        *clientes = (Cliente *) realloc(*clientes,(cont+1)*sizeof(Cliente));
     }
     return cont;
 }
