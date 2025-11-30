@@ -14,12 +14,7 @@ void salvarCliente(FILE *fcli,Cliente *clientes,int tamanhoCli);
 
 int main(){}
 
-void carregarArquivo(FILE *fpro,FILE *fped, FILE *fcli,FILE *fitem,Produto *produtos, Pedido *pedidos, Cliente *clientes,ItemPedido *itemsPedidos)
-    carregarProduto(fpro,produtos);
-    carregarPedidos(fped,pedidos);
-    carregarItemPedidos(fitem,itemsPedidos);
-    //problema por causa da pessoa juridica ou pessoa fisica
-}
+
 
 void salvarArquivo(FILE *fpro,FILE *fped, FILE *fcli,FILE *fitem,Produto *produtos, Pedido *pedidos, Cliente *clientes,ItemPedido *itemsPedidos,
                    int tamanhoProd,int tamanhoPed,int tamanhoItemPed,int tamanhoCli){
@@ -74,7 +69,7 @@ int  carregarClientes(FILE **fcli,Cliente **clientes){
     // o cont serve para ir almentando a posição do vetor
     int cont =0;
     *clientes = (Cliente *) realloc(*clientes,(cont+1)*sizeof(Clientes));
-    while(fscanf(*fcli,"%d, %199[^,], %s, %s, %s, %s, %s")){
+    while(fscanf(*fcli,"%d, %199[^,], %s, %s",&(*cliente)[cont].id)){
       cont++;
         *clientes = (Cliente *) realloc(*clientes,(cont+1)*sizeof(Clientes));
     }
