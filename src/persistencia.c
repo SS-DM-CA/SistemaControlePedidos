@@ -3,10 +3,7 @@
 #include "pedido.h"
 #include "cliente.h"
 #include <stdio.h>
-int carregarProduto(FILE **fpro,Produto **produtos);
-int carregarPedidos(FILE **fped,Pedido **pedidos);
-int carregarClientes(FILE **fcli,Cliente **clientes);
-int carregarItemPedido(FILE **fitem,ItemPedido **itemsPedidos);
+
 void salvarProduto(FILE *fpro,Produto *produtos, int tamanhoProd);
 void salvarPedido(FILE *fped,Pedido *pedidos,int tamanhoPed);
 void salvarItemPedido(FILE *fitem,ItemPedido *itemsPedidos,int tamanhoItemPed);
