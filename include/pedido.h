@@ -18,10 +18,10 @@ typedef struct{
   double subtotal;
 }ItemPedido;
 
-void cadastrarPedido(Pedidos **pedidos, int *tamanhoPed, Cliente *clientes, int tamanhoCli,ItemPedido *itemsPedidos,int tamanhoItemPed,
+void cadastrarPedido(Pedido **pedidos, int *tamanhoPed, Cliente *clientes, int tamanhoCli,ItemPedido **itemsPedidos,int *tamanhoItemPed,
                      Produto *produtos,int tamanhoProd);
 void listarPedidos(Pedido *pedidos, int tamanhoPed,ItemPedido *itemsPedidos);
-void removerPedido();
+void removerPedido(Pedido **pedidos, int *tamanhoPed);
 void consultarPedido(Pedido *pedidos, int tamanhoPed);
 
 

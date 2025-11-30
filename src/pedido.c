@@ -1,11 +1,12 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "../include/pedido.h"
 #include "../include/produto.h"
 #include "../include/cliente.h"
 
 int analisaPedido(int Id, Pedido *pedidos,int tamanhoPed);
 int analisaCliente(int Id, Cliente *clientes,int tamanhoCli);
-void cadastrarItensPedido(Produto *produtos,int tamanhoProd, ItemPedido *itemsPedidos,ItemPedido itempedido,int tamanhoItemped);
+void cadastrarItensPedido(Produto *produtos,int tamanhoProd, ItemPedido **itemsPedidos,int *tamanhoItemPed);
 int analisaProduto(int Id, Produto *produtos,int tamanhoProd);
 
 int main(){}
@@ -14,7 +15,7 @@ void removerPedido(Pedido **pedidos, int *tamanhoPed){
   int Id;
   printf("Digite o id do pedido que deseja consultar: ");
   scanf("%d",&Id);
-  if(analisaPedido(Id,pedidos,*tamanhoPed)==2){
+  if(analisaPedido(Id,*pedidos,*tamanhoPed)==2){
     //pedido não existe
     //não é possivel apagar
     printf("O pedido não existe");
@@ -23,17 +24,16 @@ void removerPedido(Pedido **pedidos, int *tamanhoPed){
     //O pedido existe
     //ele deve ser excluido
     for(int i =0;i<*tamanhoPed;i++){
-      if(*pedidos[i].id == Id){
+      if((*pedidos)[i].id == Id){
         for(int j =i; j<*tamanhoPed-1;j++){
           *pedidos[j]=*pedidos[j+1];
         }
-        *pedidos=(Pedido *) realloc(*pedidos,(*tamanhoPed-1)*sizeof(Pedido));
+        *pedidos=(Pedido *) realloc(*pedidos,((*tamanhoPed)-1)*sizeof(Pedido));
         (*tamanhoPed)--;
         break;
       }
 
     }
-
 
   }
 }
@@ -44,7 +44,8 @@ void consultarPedidos(Pedido *pedidos, int tamanhoPed){
   scanf("%d",&Id);
   if(analisaPedido(Id,pedidos,tamanhoPed) == 2){
     //Pedido não existe
-    return EXIT_FAILURE;
+
+    printf("Não existe nenhum Pedido");
   }
   else{
     //O pedido existe
@@ -52,7 +53,7 @@ void consultarPedidos(Pedido *pedidos, int tamanhoPed){
       if(pedidos[i].id==Id){
         //na interface podemos colocar ainda um botão para consultar os items pedidos;
         //aqui ele apenas imprimi os valores do pedido que deseja consultar
-        printf("%d %d %s %lf", &pedidos[i].id,&pedidos[i].clienteId,pedidos[i].data,pedidos[i].total);
+        printf("%d %d %s %lf", pedidos[i].id,pedidos[i].clienteId,pedidos[i].data,pedidos[i].total);
       }
     }
   }
@@ -64,25 +65,25 @@ void listarPedido(Pedido *pedidos, int tamanhoPed,ItemPedido *itemsPedidos){
   int cont =0;
 
   for(int i =0; i<tamanhoPed;i++){
-    printf("%d %d %s %lf", &pedidos[i].id,&pedidos[i].clienteId,pedidos[i].data,pedidos[i].total);
+    printf("%d %d %s %lf", pedidos[i].id,pedidos[i].clienteId,pedidos[i].data,pedidos[i].total);
     //imprimi os items do pedido ate comparando os codigos
     //compara até o codigo de um item pedido for diferente do codigo do pedido
     while(itemsPedidos[cont].pedidoId == pedidos[i].id){
-      printf("%d %d %d %lf",&itemsPedidos[cont].pedidoId,&itemsPedidos[cont].produtoId,&itemsPedidos[cont].quantidade,&itemsPedidos[cont].subtotal);
+      printf("%d %d %d %lf",itemsPedidos[cont].pedidoId,itemsPedidos[cont].produtoId,itemsPedidos[cont].quantidade,itemsPedidos[cont].subtotal);
     }
   }
 }
-void cadastrarPedido(Pedidos **pedidos, int *tamanhoPed, Cliente *clientes, int tamanhoCli,ItemPedido *itemsPedidos,int tamanhoItemPed,
+void cadastrarPedido(Pedido **pedidos, int *tamanhoPed, Cliente *clientes, int tamanhoCli,ItemPedido **itemsPedidos,int *tamanhoItemPed,
                      Produto *produtos,int tamanhoProd){
    Pedido pedido;
     int IdPed;
     printf("Digite o id do pedido:");
     scanf("%d", &IdPed);
   //analisar se o pedido existe ou não
-   if(analisaPedido(IdPed,pedidos,*tamanhoPed)==1){
+   if(analisaPedido(IdPed,*pedidos,*tamanhoPed)==1){
      //o pedido já existe
      //o cursor deve retornar para o campo de codigo  na tela de cadastro
-     return EXIT_FAILURE;
+     printf("O pedido ja existe");
    }
    else{
      int IdCli;
@@ -93,22 +94,22 @@ void cadastrarPedido(Pedidos **pedidos, int *tamanhoPed, Cliente *clientes, int 
      if(analisaCliente(IdCli,clientes,tamanhoCli) == 2){
        //O cliente não existe
        //o cursor deve retornar para o campo de codigo do clinte na tela de cadastro
-       return EXIT_FAILURE;
+       printf("Não existe nenhum Pedido");
      }
      else{
        //cliente existe
        pedido.clienteId = IdCli;
-       scanf("%d %s %lf",&pedido.id,&pedido.data,&pedido.total);
+       scanf("%d %s %lf",&pedido.id,pedido.data,&pedido.total);
        //aumentando o tamanho do vetor
        *pedidos = (Pedido *) realloc(*pedidos,(*tamanhoPed+1)*sizeof(Pedido));
        //adicionando o valor no vetor
-       *pedidos[*tamanhoPed] = pedido;
+       (*pedidos)[*tamanhoPed] = pedido;
        //aumantando o tamanho
        (*tamanhoPed)++;
 
 
 
-       cadastrarItensPedido(produtos,tamanhoProd,&itemsPedidos,&tamanhoItemPed);
+       cadastrarItensPedido(produtos,tamanhoProd,itemsPedidos,tamanhoItemPed);
      }
    }
 }
@@ -118,7 +119,7 @@ void removerItemPedido(Produto **produtos,int *tamanhoProd){
   int Id;
   printf("Digite o id do pedido que deseja consultar: ");
   scanf("%d",&Id);
-  if(analisaProduto(Id,produtos,tamanhoProd)== 2){
+  if(analisaProduto(Id,*produtos,*tamanhoProd)== 2){
     //O produto não existe
     printf("O produto não existe não existe");
   }
@@ -126,7 +127,7 @@ void removerItemPedido(Produto **produtos,int *tamanhoProd){
     //o produto existe
     //agora ele deve ser apagado
     for(int i =0;i<*tamanhoProd;i++){
-      if(*produtos[i].id == Id){
+      if((*produtos)[i].id == Id){
         for(int j =i; j<*tamanhoProd-1;j++){
           *produtos[j]=*produtos[j+1];
         }
@@ -148,7 +149,8 @@ void cadastrarItensPedido(Produto *produtos,int tamanhoProd, ItemPedido **itemsP
     printf("Digite o codigo do produto: ");
     scanf("%d",&IdProd);
     if (analisaProduto(IdProd,produtos,tamanhoProd) == 2) {
-        return EXIT_FAILURE;
+      //o produto não existe
+        printf("O produto não existe");
     }
     else {
         //produto existe
