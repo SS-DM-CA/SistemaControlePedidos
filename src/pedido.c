@@ -9,7 +9,7 @@ int analisaCliente(int Id, Cliente *clientes,int tamanhoCli);
 void cadastrarItensPedido(Produto *produtos,int tamanhoProd, ItemPedido **itemsPedidos,int *tamanhoItemPed);
 int analisaProduto(int Id, Produto *produtos,int tamanhoProd);
 
-int main(){}
+
 
 void removerPedido(Pedido **pedidos, int *tamanhoPed){
   int Id;
@@ -164,18 +164,7 @@ void cadastrarItensPedido(Produto *produtos,int tamanhoProd, ItemPedido **itemsP
 }
 
 
-int analisaProduto(int Id, Produto *produtos,int tamanhoProd) {
-    for (int i =0; i<tamanhoProd;i++) {
-        //no struct esta Identificador, isso pode mudar, por isso aqui irei colocar id
-        if (Id == produtos[i].id) {
-            //retorna 1 se o produto já existir
-            //o cursor deve retornar para o campo de codigo do clinte na tela de cadastro
-            return 1;
-        }
-    }
-    //retorna 2 se o o produto não existir
-    return 2;
-}
+
 
 
 int analisaPedido(int Id, Pedido *pedidos,int tamanhoPed) {

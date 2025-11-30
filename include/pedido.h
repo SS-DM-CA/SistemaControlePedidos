@@ -3,7 +3,9 @@
 
 
 #include "cliente.h"
-#include "produto.h"
+//#include "produto.h"
+//isso serve para tirar a dependencia circular
+typedef struct Produto Produto;
 typedef struct{
   int id;
   int clienteId;
@@ -11,7 +13,7 @@ typedef struct{
   double total;
 }Pedido;
 
-typedef struct{
+typedef struct ItemPedido{
   int pedidoId;
   int produtoId;
   int quantidade;
