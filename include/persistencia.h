@@ -1,30 +1,21 @@
 #ifndef PERSISTENCIA_H
 #define PERSISTENCIA_H
 
-void salvarArquivo(FILE *fpro,FILE *fped, FILE *fcli,FILE *fitem,Produto *produtos, Pedido *pedidos, Cliente *clientes,ItemPedido *itemsPedidos,
-    int tamanhoProd,int tamanhoPed,int tamanhoItemPed,int tamanhoCli);
-int carregarProduto(FILE **fpro,Produto **produtos);
-int carregarPedidos(FILE **fped,Pedido **pedidos);
-int carregarClientes(FILE **fcli,Cliente **clientes);
-int carregarItemPedido(FILE **fitem,ItemPedido **itemsPedidos);
+#include "produto.h"
+#include "pedido.h"
+#include "cliente.h"
 
+void salvarArquivo(Produto *produtos, Pedido *pedidos, Cliente *clientes, ItemPedido *itemsPedidos,
+                   int tamanhoProd, int tamanhoPed, int tamanhoItemPed, int tamanhoCli);
 
+void salvarProduto(Produto *produtos, int tamanhoProd);
+void salvarPedido(Pedido *pedidos, int tamanhoPed);
+void salvarCliente(Cliente *clientes, int tamanhoCli);
+void salvarItemPedido(ItemPedido *itemsPedidos, int tamanhoItemPed);
 
+int carregarProduto(Produto **produtos);
+int carregarPedidos(Pedido **pedidos);
+int carregarClientes(Cliente **clientes);
+int carregarItemPedido(ItemPedido **itemsPedidos);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#endif //PERSISTENCIA_H
+#endif

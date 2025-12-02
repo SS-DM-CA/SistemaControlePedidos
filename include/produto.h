@@ -1,24 +1,19 @@
-#ifndef  PRODUTO_H
-#define  PRODUTO_H
+#ifndef PRODUTO_H
+#define PRODUTO_H
 
 typedef struct {
     int id;
     char descricao[100];
     double preco;
     int estoque;
-}Produto;
+} Produto;
 
-void cadastrarProduto(Produto produto,Produto *produtos,int tamanhoProd);
+void modulo_produtos();
+void cadastrarProduto();
+void consultarProduto();
+void removerProduto();
+void listarProduto();
 
-void consultarProduto( Produto *produtos, int tamanhoProd);
+int analisaProduto(int Id, Produto *produtos, int tamanhoProd);
 
-void removerProduto(Produto *produtos, int tamanhoProd);
-
-void listarProdutos(Produto *produtos, int tamanhoProd);
-
-
-
-
-
-
-#endif //PRODUTO_H
+#endif // PRODUTO_H
