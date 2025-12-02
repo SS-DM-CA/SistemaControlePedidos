@@ -1,34 +1,28 @@
 #ifndef PEDIDO_H
 #define PEDIDO_H
 
-
-#include "cliente.h"
-#include "produto.h"
 typedef struct{
   int id;
   int clienteId;
   char data[11];
   double total;
-}Pedido;
+} Pedido;
 
 typedef struct{
   int pedidoId;
   int produtoId;
   int quantidade;
   double subtotal;
-}ItemPedido;
+} ItemPedido;
 
-void cadastrarPedido(Pedido **pedidos, int *tamanhoPed, Cliente *clientes, int tamanhoCli,ItemPedido **itemsPedidos,int *tamanhoItemPed,
-                     Produto *produtos,int tamanhoProd);
-void listarPedidos(Pedido *pedidos, int tamanhoPed,ItemPedido *itemsPedidos);
-void removerPedido(Pedido **pedidos, int *tamanhoPed);
-void consultarPedido(Pedido *pedidos, int tamanhoPed);
+void modulo_pedidos();
+void cadastrarPedido();
+void consultarPedidos();
+void removerPedido();
+void listarPedidos();
 
+void removerItemDePedido();
 
+int analisaPedido(int Id, Pedido *pedidos, int tamanhoPed);
 
-
-
-
-
-
-#endif //PEDIDO_H
+#endif // PEDIDO_H
